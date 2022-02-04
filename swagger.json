@@ -1,0 +1,1218 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "",
+    "version": ""
+  },
+  "host": "appserver:3003",
+  "basePath": "/i3/midb/adal/v1/rest/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/assoc": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "AssocType",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.DataSource",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.EntityType",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.EntitySk",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Name",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Type",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Num",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Id",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Ctid",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Cc",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Allegiance",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "From.Category",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.DataSource",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.EntityType",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.EntitySk",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Name",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Type",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Num",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Id",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Ctid",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Cc",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Allegiance",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "To.Category",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "Performing a GET operation on the /i3/midb/adal/v1/rest/assoc\n                    endpoint will search the Assoc DB for all association\n                    records of the specified view matching the parameters\n                    specified in the request.\n\n                    The ADAL ReST service supports the following wildcards\n                    in the parameter value:\n                    \n                    \n                    Finally, the ADAL ReST service supports multivalue\n                    equivalence checks (the IN SQL operation).  The client \n                    should specify the multiple values to compare separated by \n                    commas, ','.\n                    \n                    As an example using the Query by Example, to request\n                    all associations to GMI Units, the client should perform \n                    an HTTP GET to the URL:\n                    \n                    \n                    \n                    This Query by Example functionality is based off of the\n                    ADAL Query by Example API in the Search bean.  More \n                    information is available \n                    .\n                        \n                    The association object specified may contain either the\n                    valid value or the full association description (type).  The\n                    returned objects will have the full association description,\n                    and not the valid value abbreviation."
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to create a new association\n                    record in the ASSOC DB.  The client will pass in an \n                    Association element, the association to insert.  \n                    Additionally, the client must specify the UserInformation \n                    (Ownership and SYS_SOURCE) as query parameters in the URL \n                    of the POST.\n                    \n                    As an example creating a new association record, a client\n                    should perform a HTTP POST to the URL:\n                    \n                    \n                    \n                    The body of that post should be an Association element.\n\n                    The association object specified may contain either the\n                    valid value or the full association description (type).  The\n                    returned object will have the full association description,\n                    and not the valid value abbreviation."
+      },
+      "parameters": []
+    },
+    "/assoc/{sk}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to retrieve the details\n                        of a specific Association record.\n                        \n                        For example, performing an HTTP GET to the\n                        URL:\n                        \n                        \n                        \n                        will retrieve the Association object with SK \n                        51000000000001.\n\n                        The returned object will have the full association \n                        description, and not the valid value abbreviation."
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update an existing\n                        association record in the ASSOC DB.  The client will \n                        pass in an Association element, the composite to update.  Additionally, the \n                        client must specify the UserInformation (Ownership and \n                        SYS_SOURCE) as query parameters in the URL of the POST.\n\n                        As an example updating an existing Association record, \n                        a client should perform a HTTP PUT to the URL:\n\n                        \n\n                        The body of that post should be an Association XML\n                        element.\n                        \n                        Please note, that as the application server does \n                        not support PUT or DELETE operations, this method is\n                        not available in EAServer.  Instead this same \n                        functionality is replicated under POST to the same\n                        URL.\n\n                        The association object specified may contain either the\n                        valid value or the full association description (type).  The\n                        returned object will have the full association description,\n                        and not the valid value abbreviation."
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to delete an existing\n                        association  record in the ASSOC DB.  The client will \n                        pass in a PdalComposites element with exactly one \n                        child, the composite to update.  Additionally, the \n                        client must specify the UserInformation (Ownership and \n                        SYS_SOURCE) as query parameters in the URL of the POST.\n\n                        As an example updating an existing association record, \n                        a client should perform a HTTP DELETE to the URL:\n\n                        \n                        \n                        Please note, that as the application server does \n                        not support PUT or DELETE operations, this method is\n                        not available in EAServer."
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update an existing\n                        assoc record in the ASSOC DB.  The client will \n                        pass in an Association element, the association to \n                        update.  Additionally, the client must specify the \n                        UserInformation (Ownership and SYS_SOURCE) as query \n                        parameters in the URL of the POST.\n\n                        As an example updating an existing Association record, \n                        a client should perform a HTTP PUT to the URL:\n\n                        \n\n                        The body of that post should be an Association XML\n                        element.\n                        \n                        This functionality is duplicated from a PUT \n                        operation to the same URL as a workaround due to\n                        EAServer not supporting PUT or DELETE operations.\n\n                        The association object specified may contain either the\n                        valid value or the full association description (type).  The\n                        returned object will have the full association description,\n                        and not the valid value abbreviation."
+      },
+      "parameters": [
+        {
+          "name": "sk",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/assoc/{sk}/modOwner": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update the ownership \n                            of an existing association record in the ASSOC DB.  \n                            The client must specify the UserInformation (Ownership and \n                            SYS_SOURCE) as query parameters in the URL of the POST.\n    \n                            As an example updating ownership in an existing Association record, \n                            a client should perform a HTTP PUT to the URL:\n    \n                            \n    \n                            Please note, that as the application server does \n                            not support PUT or DELETE operations, this method is\n                            not available in EAServer.  Instead this same \n                            functionality is replicated under POST to the same\n                            URL."
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update the ownership \n                            of an existing association record in the ASSOC DB.  \n                            The client must specify the UserInformation (Ownership and \n                            SYS_SOURCE) as query parameters in the URL of the POST.\n    \n                            As an example updating ownership in an existing Association record, \n                            a client should perform a HTTP PUT to the URL:\n    \n                            \n    \n                            Please note, that as the application server does \n                            not support PUT or DELETE operations, this method is\n                            not available in EAServer.  Instead this same \n                            functionality is replicated under POST to the same\n                            URL."
+      },
+      "parameters": [
+        {
+          "name": "sk",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/assoc/modOwner": {
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "XdbId",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Chained",
+            "required": false,
+            "in": "query",
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update the ownership \n                        of multiple association records in the ASSOC DB.  \n                        The client must specify the UserInformation (Ownership and \n                        SYS_SOURCE) as query parameters in the URL of the POST.\n\n                        The Chained parameter will determine whether the \n                        server will rollback all changes and throw an exception\n                        (true) or persist as many changes as possible and return\n                        the IDs that failed to update (false).\n\n                        As an example updating ownership in an existing Association record, \n                        a client should perform a HTTP PUT to the URL:\n\n                        \n\n                        Please note, that as the application server does \n                        not support PUT or DELETE operations, this method is\n                        not available in EAServer.  Instead this same \n                        functionality is replicated under POST to the same\n                        URL."
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "XdbId",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Chained",
+            "required": false,
+            "in": "query",
+            "type": "boolean",
+            "default": false
+          },
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update the ownership \n                        of multiple association records in the ASSOC DB.  \n                        The client must specify the UserInformation (Ownership and \n                        SYS_SOURCE) as query parameters in the URL of the POST.\n\n                        As an example updating ownership in an existing Association record, \n                        a client should perform a HTTP POST to the URL:\n\n                        \n\n                        Please note, that as the application server does \n                        not support PUT or DELETE operations, this method is\n                        not available in EAServer.  Instead this same \n                        functionality is replicated under POST to the same\n                        URL."
+      },
+      "parameters": []
+    },
+    "/entity": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "DataSource",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "EntityType",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "EntitySk",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Name",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Type",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Num",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Id",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Ctid",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Cc",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Allegiance",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Category",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "Performing a GET operation on the \n                    /i3/midb/adal/v1/rest/entity/\n                    endpoint will search the Assoc DB for all composite\n                    records with associations to or from the specified entity.\n\n                    As an example using the Entity Query, to request\n                    all associations related to GMI Unit 12345000000001, the \n                    client should perform an HTTP GET to the URL:\n                    \n                    \n\n                    The returned objects will have the full association \n                    description, and not the valid value abbreviation."
+      },
+      "parameters": []
+    },
+    "/entity/{dataSrc}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to retrieve all Association\n                        records that link an entity from the specified data source.\n                        \n                        For example, performing an HTTP GET to the\n                        URL:\n                        \n                        \n                        \n                        will retrieve all Associations objects related to the GMI\n                        data source.\n\n                        The returned objects will have the full association \n                        description, and not the valid value abbreviation."
+      },
+      "parameters": [
+        {
+          "name": "dataSrc",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/entity/{dataSrc}/{entityType}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to retrieve all Association\n                            records that link a specific type of entity from the \n                            specified data source.\n\n                            For example, performing an HTTP GET to the\n                            URL:\n\n                            \n\n                            will retrieve all Associations objects related to any\n                            Unit entity in the GMI data source.\n                            \n                            The returned objects will have the full association \n                            description, and not the valid value abbreviation."
+      },
+      "parameters": [
+        {
+          "name": "dataSrc",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        },
+        {
+          "name": "entityType",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/entity/{dataSrc}/{entityType}/{sk}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to retrieve all Association\n                                records that link a specific entity in the  \n                                specified data source.\n\n                                For example, performing an HTTP GET to the\n                                URL:\n\n                                \n\n                                will retrieve all Associations objects related to the \n                                Unit entity with SK=12345000000001 in the GMI data source.\n\n                                The returned objects will have the full association \n                                description, and not the valid value abbreviation."
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update an existing\n                                entity (TABLE_KEYS) record in the ASSOC DB.  The client will \n                                pass in an Entity element, the entity to update.  Additionally, the \n                                client must specify the UserInformation (Ownership and \n                                SYS_SOURCE) as query parameters in the URL of the POST.\n\n                                As an example updating an existing Entity record, \n                                a client should perform a HTTP PUT to the URL:\n\n                                \n\n                                The body of that post should be an IXdbEntity XML\n                                element.\n\n                                Please note, that as the application server does \n                                not support PUT or DELETE operations, this method is\n                                not available in EAServer.  Instead this same \n                                functionality is replicated under POST to the same\n                                URL."
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "GroupId",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update an existing\n                                entity (TABLE_KEYS) record in the ASSOC DB.  The client will \n                                pass in an Entity element, the entity to update.  Additionally, the \n                                client must specify the UserInformation (Ownership and \n                                SYS_SOURCE) as query parameters in the URL of the POST.\n\n                                As an example updating an existing Entity record, \n                                a client should perform a HTTP PUT to the URL:\n\n                                \n\n                                The body of that post should be an IXdbEntity XML\n                                element.\n\n                                This functionality is duplicated from a PUT \n                                operation to the same URL as a workaround due to\n                                EAServer not supporting PUT or DELETE operations."
+      },
+      "parameters": [
+        {
+          "name": "dataSrc",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        },
+        {
+          "name": "entityType",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        },
+        {
+          "name": "sk",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/changeEvent": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all changes\n                    that have occurred throughout the ASSOC DB during the \n                    specified period of time (all times in GMT).\n                    \n                    To find the Table and SK of all all the changes that \n                    have occurred in the ASSOC DB between 12:00:00 GMT \n                    Nov 11, 2008 and 17:00:00 GMT Nov 12, 2008, the client \n                    should perform an HTTP GET on URL:\n                    \n                    \n                    \n                    The QueryType parameter will determine if only a \n                    short change event record (just the Table and SK) or \n                    a full change event record is returned."
+      },
+      "parameters": [
+        {
+          "name": "Start",
+          "required": true,
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "End",
+          "required": true,
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "QueryType",
+          "required": false,
+          "in": "query",
+          "type": "string",
+          "default": "short"
+        }
+      ]
+    },
+    "/changeEvent/{table}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all changes\n                       that have occurred throughout the specified table of\n                       the ASSOC DB during the specified period of time \n                       (all times in GMT).\n                       \n                       To find the complete details of all the changes that \n                       have occurred to the Individual AKA table between \n                       12:00:00 GMT Nov 11, 2008 and 17:00:00 GMT \n                       Nov 12, 2008, the client should perform an HTTP \n                       GET on URL:\n                       \n                       \n                       \n                       The QueryType parameter will determine if only a \n                       short change event record (just the Table and SK) or \n                       a full change event record is returned."
+      },
+      "parameters": [
+        {
+          "name": "Start",
+          "required": true,
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "End",
+          "required": true,
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "QueryType",
+          "required": false,
+          "in": "query",
+          "type": "string",
+          "default": "short"
+        },
+        {
+          "name": "table",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/changeEvent/{table}/{sk}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all \n                          changes that have occurred to the specified \n                          entity in the GMI DB during the specified period \n                          of time (all times in GMT).\n                          \n                          To find the complete details of all the \n                          changes that have occurred in to the Material\n                          with SK 51000000000001 between 12:00:00 GMT \n                          Nov 11, 2008 and 17:00:00 GMT Nov 12, 2008, \n                          the client should perform an HTTP GET on URL:\n                          \n                          \n                          \n                          The QueryType parameter will determine if only a \n                          short change event record (just the Table and SK) or \n                          a full change event record is returned."
+      },
+      "parameters": [
+        {
+          "name": "Start",
+          "required": true,
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "End",
+          "required": true,
+          "in": "query",
+          "type": "string"
+        },
+        {
+          "name": "QueryType",
+          "required": false,
+          "in": "query",
+          "type": "string",
+          "default": "short"
+        },
+        {
+          "name": "table",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        },
+        {
+          "name": "sk",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/currentServer": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the current\n                    server ID."
+      },
+      "parameters": []
+    },
+    "/validValues": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all valid values\n                    for all constrained fields in the Assoc DB."
+      },
+      "parameters": []
+    },
+    "/validValues/{field}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all \n                        valid values for the specified constrained fields \n                        in the Assoc DB."
+      },
+      "parameters": [
+        {
+          "name": "field",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/fieldHelp": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the description\n                    of all fields in the Assoc DB."
+      },
+      "parameters": []
+    },
+    "/fieldHelp/{field}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the \n                        description of a specific field in the Assoc DB."
+      },
+      "parameters": [
+        {
+          "name": "field",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/fieldDef": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the description\n                    of all fields in the Assoc DB."
+      },
+      "parameters": []
+    },
+    "/fieldDef/{field}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the \n                        description of a specific field in the Assoc DB."
+      },
+      "parameters": [
+        {
+          "name": "field",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/dbTable": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all valid \n                    datasource/entity pairs known by the ASSOC DB."
+      },
+      "parameters": []
+    },
+    "/dbTable/{dataSrc}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for all valid\n                        entitites within the specified data source as known \n                        by the Assoc DB."
+      },
+      "parameters": [
+        {
+          "name": "dataSrc",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/dbTable/{dataSrc}/{entityType}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the\n                            DbTable record for the given data source/entity \n                            type pair."
+      },
+      "parameters": [
+        {
+          "name": "dataSrc",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        },
+        {
+          "name": "entityType",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/userPerms/{userId}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to query for the privileges\n                    granted to a specific user in the Assoc DB."
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    },
+    "/secCombo": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ClassLvl",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ControlMark",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "DomainLvl",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ReleaseMark",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "OwnerProducer",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Codeword",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to query for all security\n                    combinations matching the values specified.\n                    \n                    For example, if a client wished to retrieve all valid\n                    combinations of Secret Collateral markings, the client \n                    should perform an HTTP GET to URL:"
+      },
+      "parameters": []
+    },
+    "/secCombo/aggregate": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ClassLvl",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ControlMark",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "DomainLvl",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "ReleaseMark",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "OwnerProducer",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "Codeword",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to determine the security\n                        combination resulting from the aggregation of multiple\n                        combinations.\n                        \n                        For example, if a client wished to the security\n                        combination that includes all caveats/dissemination\n                        controls for SI and TK markings, the client \n                        should perform an HTTP GET to URL:"
+      },
+      "parameters": []
+    },
+    "/products": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "StartIdx",
+            "required": false,
+            "in": "query",
+            "type": "integer"
+          },
+          {
+            "name": "EndIdx",
+            "required": false,
+            "in": "query",
+            "type": "integer"
+          }
+        ],
+        "description": "Performing a GET operation on the /i3/midb/adal/v1/rest/products\n                    endpoint will search the database for all Graphic/Product\n                    records matching the parameters specified in the request. \n                    <p/> The ADAL ReST service supports the following wildcards\n                    in the parameter value:\n                    <ul>\n                        <li>* - Match zero or more of any character</li>\n                        <li>% - Match zero or more of any character</li>\n                        <li>? - Match exactly one of any character</li>\n                        <li>_ - Match exactly one of any character</li>\n                        <li>@ - Match exactly one alphabetic character</li>\n                        <li># - Match exactly one numeric character</li>\n                    </ul>\n                    \n                    <p/>Finally, the ADAL ReST service supports multivalue\n                    equivalence checks (the IN SQL operation).  The client \n                    should specify the multiple values to compare separated by \n                    commas, &apos;,&apos;.\n                    \n                    <p/>As an example using the Query by Example, to request\n                    all associations to GMI Units, the client should perform \n                    an HTTP GET to the URL:\n                    \n                    <p/><a href=\"http://appserver:3003/i3/midb/adal/v1/rest/assoc?To.DataSource=GMI&amp;To.EntityType=Unit\">\n                    http://appserver:3003/i3/midb/adal/v1/rest/assoc?To.DataSource=GMI&amp;To.EntityType=Unit\n                    </a>\n                    \n                    <p/>This Query by Example functionality is based off of the\n                    ADAL Query by Example API in the Search bean.  More \n                    information is available \n                    <a href=\"/adal_docs/mil/dia/midb/adal/association/ejb/AssociationSessionBean.html\">\n                        here</a>.\n                        \n                    <p/>The association object specified may contain either the\n                    valid value or the full association description (type).  The\n                    returned objects will have the full association description,\n                    and not the valid value abbreviation."
+      },
+      "post": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to create a new association\n                    record in the ASSOC DB.  The client will pass in an \n                    Association element, the association to insert.  \n                    Additionally, the client must specify the UserInformation \n                    (Ownership and SYS_SOURCE) as query parameters in the URL \n                    of the POST.\n                    \n                    <p/>As an example creating a new association record, a client\n                    should perform a HTTP POST to the URL:\n                    \n                    <p/><a href=\"http://appserver:3003/i3/midb/adal/v1/rest/assoc?ProducerCode=AA&amp;SysSource=System_of_Record\">\n                    http://appserver:3003/i3/midb/adal/v1/rest/assoc?ProducerCode=AA&amp;SysSource=System_of_Record\n                    </a>\n                    \n                    <p/>The body of that post should be an Association element.\n\n                    <p/>The association object specified may contain either the\n                    valid value or the full association description (type).  The\n                    returned object will have the full association description,\n                    and not the valid value abbreviation."
+      },
+      "parameters": []
+    },
+    "/products/{sk}": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "description": "This method allows the client to retrieve the details\n                        of a specific Association record.\n                        \n                        <p/>For example, performing an HTTP GET to the\n                        URL:\n                        \n                        <p/><a href=\"http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001\">\n                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001\n                        </a>\n                        \n                        <p/>will retrieve the Association object with SK \n                        51000000000001.\n\n                        <p/>The returned object will have the full association \n                        description, and not the valid value abbreviation."
+      },
+      "put": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to update an existing\n                        association record in the ASSOC DB.  The client will \n                        pass in an Association element, the composite to update.  Additionally, the \n                        client must specify the UserInformation (Ownership and \n                        SYS_SOURCE) as query parameters in the URL of the POST.\n\n                        <p/>As an example updating an existing Association record, \n                        a client should perform a HTTP PUT to the URL:\n\n                        <p/><a href=\"http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record\">\n                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record\n                        </a>\n\n                        <p/>The body of that post should be an Association XML\n                        element.\n                        \n                        <p/>Please note, that as the application server does \n                        not support PUT or DELETE operations, this method is\n                        not available in EAServer.  Instead this same \n                        functionality is replicated under POST to the same\n                        URL.\n\n                        <p/>The association object specified may contain either the\n                        valid value or the full association description (type).  The\n                        returned object will have the full association description,\n                        and not the valid value abbreviation."
+      },
+      "delete": {
+        "responses": {
+          "200": {
+            "description": "Successful Response"
+          }
+        },
+        "parameters": [
+          {
+            "name": "ProducerCode",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SiteOriginator",
+            "required": false,
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "SysSource",
+            "required": true,
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "description": "This method allows the client to delete an existing\n                        association  record in the ASSOC DB.  The client will \n                        pass in a PdalComposites element with exactly one \n                        child, the composite to update.  Additionally, the \n                        client must specify the UserInformation (Ownership and \n                        SYS_SOURCE) as query parameters in the URL of the POST.\n\n                        <p/>As an example updating an existing association record, \n                        a client should perform a HTTP DELETE to the URL:\n\n                        <p/><a href=\"http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record\">\n                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record\n                        </a>\n                        \n                        <p/>Please note, that as the application server does \n                        not support PUT or DELETE operations, this method is\n                        not available in EAServer."
+      },
+      "parameters": [
+        {
+          "name": "sk",
+          "required": true,
+          "in": "path",
+          "type": "string"
+        }
+      ]
+    }
+  }
+}
