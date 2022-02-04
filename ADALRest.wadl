@@ -1,0 +1,2641 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xml" href="wadl_documentation.xsl"?>
+
+<!--
+    Document   : ADALRest.wadl
+    Author     : Eric Wheeler (eric.wheeler@ngc.com)
+    Created on : November 11, 2008, 11:39 AM
+    Description:
+        Document the ReST interface to the Assoc ADAL.
+-->
+<wadl:application xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+    xmlns:wadl='http://research.sun.com/wadl/2006/10' 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:assoc="urn:midb:assoc"
+    xmlns:products="urn:midb:products"     
+    xmlns:producer="urn:midb:assoc:producer"     
+    xmlns:support="urn:midb:assoc:support" 
+    xmlns:castor="urn:midb:assoc:castor"
+    xsi:schemaLocation='http://research.sun.com/wadl/2006/10 https://wadl.dev.java.net/wadl20061109.xsd        
+        urn:midb:assoc adal/IXdbAssn.xsd
+        urn:midb:products adal/Products.xsd     
+        urn:midb:assoc:producer adal/Producer.xsd   
+        urn:midb:assoc:support adal/Support.xsd        
+        urn:midb:assoc:castor adal/Castor.xsd'
+>
+    <wadl:doc title="Assoc ADAL ReST Implementation" />
+    <wadl:grammars>               
+        <wadl:include href="adal/Support.xsd" />
+        <wadl:include href="adal/Castor.xsd" />
+    </wadl:grammars>
+    <wadl:resources base="http://appserver:3003/i3/midb/adal/v1/rest/">
+        <wadl:doc title="ADAL ReST Service Base Endpoint">
+            The i3/midb/adal URL path represents the base of all
+            endpoints supported by the Association Data Access Layer (ADAL)
+            web services.
+        </wadl:doc>
+        <wadl:resource path="assoc">
+            <wadl:doc title="ADAL Association view endpoint">
+                The /i3/midb/adal/v1/rest/assoc URL path represents
+                all association records.
+            </wadl:doc>
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query By Example method">
+                    Performing a GET operation on the /i3/midb/adal/v1/rest/assoc
+                    endpoint will search the Assoc DB for all association
+                    records of the specified view matching the parameters
+                    specified in the request.
+
+                    <p/>The ADAL ReST service supports the following wildcards
+                    in the parameter value:
+                    <ul>
+                        <li>* - Match zero or more of any character</li>
+                        <li>% - Match zero or more of any character</li>
+                        <li>? - Match exactly one of any character</li>
+                        <li>_ - Match exactly one of any character</li>
+                        <li>@ - Match exactly one alphabetic character</li>
+                        <li># - Match exactly one numeric character</li>
+                    </ul>
+                    
+                    <p/>Finally, the ADAL ReST service supports multivalue
+                    equivalence checks (the IN SQL operation).  The client 
+                    should specify the multiple values to compare separated by 
+                    commas, &apos;,&apos;.
+                    
+                    <p/>As an example using the Query by Example, to request
+                    all associations to GMI Units, the client should perform 
+                    an HTTP GET to the URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc?To.DataSource=GMI&amp;To.EntityType=Unit">
+                    http://appserver:3003/i3/midb/adal/v1/rest/assoc?To.DataSource=GMI&amp;To.EntityType=Unit
+                    </a>
+                    
+                    <p/>This Query by Example functionality is based off of the
+                    ADAL Query by Example API in the Search bean.  More 
+                    information is available 
+                    <a href="/adal_docs/mil/dia/midb/adal/association/ejb/AssociationSessionBean.html">
+                        here</a>.
+                        
+                    <p/>The association object specified may contain either the
+                    valid value or the full association description (type).  The
+                    returned objects will have the full association description,
+                    and not the valid value abbreviation.
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="AssocType" style="query" 
+                        type="xsd:string" required="false"/>
+
+                    <wadl:param name="From.DataSource" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.EntityType" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.EntitySk" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Name" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Type" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Num" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Id" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Ctid" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Cc" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Allegiance" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="From.Category" style="query" 
+                        type="xsd:string" required="false"/>
+
+                    <wadl:param name="To.DataSource" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.EntityType" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.EntitySk" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Name" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Type" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Num" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Id" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Ctid" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Cc" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Allegiance" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="To.Category" style="query" 
+                        type="xsd:string" required="false"/>
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="castor:AssocComposites"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified view was not recognized.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:method name="POST">
+                <wadl:doc title="ADAL Association Insert method">
+                    This method allows the client to create a new association
+                    record in the ASSOC DB.  The client will pass in an 
+                    Association element, the association to insert.  
+                    Additionally, the client must specify the UserInformation 
+                    (Ownership and SYS_SOURCE) as query parameters in the URL 
+                    of the POST.
+                    
+                    <p/>As an example creating a new association record, a client
+                    should perform a HTTP POST to the URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc?ProducerCode=AA&amp;SysSource=System_of_Record">
+                    http://appserver:3003/i3/midb/adal/v1/rest/assoc?ProducerCode=AA&amp;SysSource=System_of_Record
+                    </a>
+                    
+                    <p/>The body of that post should be an Association element.
+
+                    <p/>The association object specified may contain either the
+                    valid value or the full association description (type).  The
+                    returned object will have the full association description,
+                    and not the valid value abbreviation.
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="ProducerCode" style="query" 
+                        type="assoc:ProducerCodeType" required="false"/>
+                    <wadl:param name="SiteOriginator" style="query" 
+                        type="assoc:SiteOriginatorType" required="false"/>
+                    <wadl:param name="GroupId" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="SysSource" style="query"
+                        type="assoc:SysSourceType" required="true"/>
+                    <wadl:representation mediaType="*/xml"
+                        element="castor:AssocComposites"/>
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml"
+                        element="castor:AssocComposites"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified view was not recognized.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{sk}">
+                <wadl:param name="sk" style="template" type="assoc:SkType"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Retrieve Composite method">
+                        This method allows the client to retrieve the details
+                        of a specific Association record.
+                        
+                        <p/>For example, performing an HTTP GET to the
+                        URL:
+                        
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001
+                        </a>
+                        
+                        <p/>will retrieve the Association object with SK 
+                        51000000000001.
+
+                        <p/>The returned object will have the full association 
+                        description, and not the valid value abbreviation.
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:AssocComposites"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End GET to /{view}/{sk} -->
+                <wadl:method name="PUT">
+                    <wadl:doc title="ADAL Update Composite method">
+                        This method allows the client to update an existing
+                        association record in the ASSOC DB.  The client will 
+                        pass in an Association element, the composite to update.  Additionally, the 
+                        client must specify the UserInformation (Ownership and 
+                        SYS_SOURCE) as query parameters in the URL of the POST.
+
+                        <p/>As an example updating an existing Association record, 
+                        a client should perform a HTTP PUT to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+
+                        <p/>The body of that post should be an Association XML
+                        element.
+                        
+                        <p/>Please note, that as the application server does 
+                        not support PUT or DELETE operations, this method is
+                        not available in EAServer.  Instead this same 
+                        functionality is replicated under POST to the same
+                        URL.
+
+                        <p/>The association object specified may contain either the
+                        valid value or the full association description (type).  The
+                        returned object will have the full association description,
+                        and not the valid value abbreviation.
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="GroupId" style="query" 
+                            type="xsd:string" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:AssocComposites"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation mediatype="*/xml"
+                            element="castor:assoccomposites"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End PUT to /{view}/{sk} -->
+                <wadl:method name="DELETE">
+                    <wadl:doc title="ADAL Delete Composite method">
+                        This method allows the client to delete an existing
+                        association  record in the ASSOC DB.  The client will 
+                        pass in a PdalComposites element with exactly one 
+                        child, the composite to update.  Additionally, the 
+                        client must specify the UserInformation (Ownership and 
+                        SYS_SOURCE) as query parameters in the URL of the POST.
+
+                        <p/>As an example updating an existing association record, 
+                        a client should perform a HTTP DELETE to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+                        
+                        <p/>Please note, that as the application server does 
+                        not support PUT or DELETE operations, this method is
+                        not available in EAServer.
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="GroupId" style="query" 
+                            type="xsd:string" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation status="200" mediaType="*/xml">
+                            <wadl:doc>
+                                The server will return a 200 status with no
+                                body on a successful deletion.
+                            </wadl:doc>
+                        </wadl:representation>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End DELETE to /{view}/{sk} -->
+                <wadl:method name="POST">
+                    <wadl:doc title="ADAL Update Composite method">
+                        This method allows the client to update an existing
+                        assoc record in the ASSOC DB.  The client will 
+                        pass in an Association element, the association to 
+                        update.  Additionally, the client must specify the 
+                        UserInformation (Ownership and SYS_SOURCE) as query 
+                        parameters in the URL of the POST.
+
+                        <p/>As an example updating an existing Association record, 
+                        a client should perform a HTTP PUT to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+
+                        <p/>The body of that post should be an Association XML
+                        element.
+                        
+                        <p/>This functionality is duplicated from a PUT 
+                        operation to the same URL as a workaround due to
+                        EAServer not supporting PUT or DELETE operations.
+
+                        <p/>The association object specified may contain either the
+                        valid value or the full association description (type).  The
+                        returned object will have the full association description,
+                        and not the valid value abbreviation.
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="GroupId" style="query" 
+                            type="xsd:string" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:AssocComposites"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:AssocComposites"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End POST to /assoc/{sk} -->
+                <wadl:resource path="modOwner">
+                    <wadl:method name="PUT">
+                        <wadl:doc title="ADAL Modify Ownership method">
+                            This method allows the client to update the ownership 
+                            of an existing association record in the ASSOC DB.  
+                            The client must specify the UserInformation (Ownership and 
+                            SYS_SOURCE) as query parameters in the URL of the POST.
+    
+                            <p/>As an example updating ownership in an existing Association record, 
+                            a client should perform a HTTP PUT to the URL:
+    
+                            <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001/modOwner?ProducerCode=AA&amp;SysSource=System_of_Record">
+                            http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001/modOwner?ProducerCode=AA&amp;SysSource=System_of_Record
+                            </a>
+    
+                            <p/>Please note, that as the application server does 
+                            not support PUT or DELETE operations, this method is
+                            not available in EAServer.  Instead this same 
+                            functionality is replicated under POST to the same
+                            URL.
+                        </wadl:doc>
+                        <wadl:request>
+                            <wadl:param name="ProducerCode" style="query" 
+                                type="assoc:ProducerCodeType" required="false"/>
+                            <wadl:param name="SiteOriginator" style="query" 
+                                type="assoc:SiteOriginatorType" required="false"/>
+                            <wadl:param name="GroupId" style="query" 
+                                type="xsd:string" required="false"/>
+                            <wadl:param name="SysSource" style="query"
+                                type="assoc:SysSourceType" required="true"/>
+                        </wadl:request>
+                        <wadl:response>
+                            <wadl:representation mediatype="*/xml"
+                                element="castor:assoccomposites"/>
+                            <wadl:fault status="401" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 401 error if the
+                                    user failed to provide credentials using HTTP 
+                                    BASIC authentication headers, or the credentials
+                                    were not valid.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="404" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 404 error if the
+                                    specified view/SK combination was not 
+                                    found.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="400" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 400 error if the
+                                    an error occurred in the DAL performing the 
+                                    requested action.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="500" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 500 error if the
+                                    ReST service wrapper could not find an 
+                                    implementation matching the specified URL and 
+                                    Content-Type combination.
+                                </wadl:doc>
+                            </wadl:fault>
+                        </wadl:response>
+                    </wadl:method> <!-- End PUT to /{view}/{sk}/modOwner -->
+                    <wadl:method name="POST">
+                        <wadl:doc title="ADAL Modify Ownership method">
+                            This method allows the client to update the ownership 
+                            of an existing association record in the ASSOC DB.  
+                            The client must specify the UserInformation (Ownership and 
+                            SYS_SOURCE) as query parameters in the URL of the POST.
+    
+                            <p/>As an example updating ownership in an existing Association record, 
+                            a client should perform a HTTP PUT to the URL:
+    
+                            <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001/modOwner?ProducerCode=AA&amp;SysSource=System_of_Record">
+                            http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001/modOwner?ProducerCode=AA&amp;SysSource=System_of_Record
+                            </a>
+    
+                            <p/>Please note, that as the application server does 
+                            not support PUT or DELETE operations, this method is
+                            not available in EAServer.  Instead this same 
+                            functionality is replicated under POST to the same
+                            URL.
+                        </wadl:doc>
+                        <wadl:request>
+                            <wadl:param name="ProducerCode" style="query" 
+                                type="assoc:ProducerCodeType" required="false"/>
+                            <wadl:param name="SiteOriginator" style="query" 
+                                type="assoc:SiteOriginatorType" required="false"/>
+                            <wadl:param name="GroupId" style="query" 
+                                type="xsd:string" required="false"/>
+                            <wadl:param name="SysSource" style="query"
+                                type="assoc:SysSourceType" required="true"/>
+                        </wadl:request>
+                        <wadl:response>
+                            <wadl:representation mediatype="*/xml"
+                                element="castor:assoccomposites"/>
+                            <wadl:fault status="401" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 401 error if the
+                                    user failed to provide credentials using HTTP 
+                                    BASIC authentication headers, or the credentials
+                                    were not valid.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="404" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 404 error if the
+                                    specified view/SK combination was not 
+                                    found.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="400" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 400 error if the
+                                    an error occurred in the DAL performing the 
+                                    requested action.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="500" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 500 error if the
+                                    ReST service wrapper could not find an 
+                                    implementation matching the specified URL and 
+                                    Content-Type combination.
+                                </wadl:doc>
+                            </wadl:fault>
+                        </wadl:response>
+                    </wadl:method> <!-- End POST to /{view}/{sk}/modOwner -->
+                </wadl:resource> <!-- End /assoc/{sk}/modOwner -->
+            </wadl:resource> <!-- End /assoc/{sk} -->
+
+
+
+            <wadl:resource path="modOwner">
+                <wadl:method name="PUT">
+                    <wadl:doc title="ADAL Modify Ownership method">
+                        This method allows the client to update the ownership 
+                        of multiple association records in the ASSOC DB.  
+                        The client must specify the UserInformation (Ownership and 
+                        SYS_SOURCE) as query parameters in the URL of the POST.
+
+                        <p/>The Chained parameter will determine whether the 
+                        server will rollback all changes and throw an exception
+                        (true) or persist as many changes as possible and return
+                        the IDs that failed to update (false).
+
+                        <p/>As an example updating ownership in an existing Association record, 
+                        a client should perform a HTTP PUT to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/modOwner?XdbId=51000000000001&amp;XdbId=51000000000002&amp;Chained=true&amp;ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001/modOwner?XdbId=51000000000001&amp;XdbId=51000000000002&amp;Chained=true&amp;ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+
+                        <p/>Please note, that as the application server does 
+                        not support PUT or DELETE operations, this method is
+                        not available in EAServer.  Instead this same 
+                        functionality is replicated under POST to the same
+                        URL.
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="XdbId" style="query"
+                            type="assoc:SkType" required="true"/>
+                        <wadl:param name="Chained" style="query"
+                            type="xsd:boolean" default="false" 
+                            required="false"/>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="GroupId" style="query" 
+                            type="xsd:string" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation mediatype="*/xml"
+                            element="castor:XdbIds"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action and Chained is true.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End PUT to /{view}/{sk}/modOwner -->
+                <wadl:method name="POST">
+                    <wadl:doc title="ADAL Modify Ownership method">
+                        This method allows the client to update the ownership 
+                        of multiple association records in the ASSOC DB.  
+                        The client must specify the UserInformation (Ownership and 
+                        SYS_SOURCE) as query parameters in the URL of the POST.
+
+                        <p/>As an example updating ownership in an existing Association record, 
+                        a client should perform a HTTP POST to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/modOwner?XdbId=51000000000001&amp;XdbId=51000000000002&amp;ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001/modOwner?XdbId=51000000000001&amp;XdbId=51000000000002&amp;ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+
+                        <p/>Please note, that as the application server does 
+                        not support PUT or DELETE operations, this method is
+                        not available in EAServer.  Instead this same 
+                        functionality is replicated under POST to the same
+                        URL.
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="XdbId" style="query"
+                            type="assoc:SkType" required="true"/>
+                        <wadl:param name="Chained" style="query"
+                            type="xsd:boolean" default="false" 
+                            required="false"/>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="GroupId" style="query" 
+                            type="xsd:string" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:AssocComposites"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation mediatype="*/xml"
+                            element="castor:XdbIds"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action and Chained is true.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End POST to /{view}/{sk}/modOwner -->
+
+
+
+
+
+            </wadl:resource> <!-- End /assoc/{sk}/modOwner -->
+        </wadl:resource> <!-- End /assoc -->
+        
+<!--  Entity stuff here -->        
+        <wadl:resource path="entity">
+            <wadl:doc title="ADAL Association entity endpoint">
+                The /i3/midb/adal/v1/rest/entity/{dataSource}/{entityType}/{entitySk}
+                URL path represents all association records to or from the
+                specified entity.
+            </wadl:doc>
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Entity Query method">
+                    Performing a GET operation on the 
+                    /i3/midb/adal/v1/rest/entity/
+                    endpoint will search the Assoc DB for all composite
+                    records with associations to or from the specified entity.
+
+                    <p/>As an example using the Entity Query, to request
+                    all associations related to GMI Unit 12345000000001, the 
+                    client should perform an HTTP GET to the URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity?DataSource=GMI&amp;EntityType=Unit&amp;EntitySk=12345000000001">
+                    http://appserver:3003/i3/midb/adal/v1/rest/entity?DataSource=GMI&amp;EntityType=Unit&amp;EntitySk=12345000000001
+                    </a>
+
+                    <p/>The returned objects will have the full association 
+                    description, and not the valid value abbreviation.
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="DataSource" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="EntityType" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="EntitySk" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Name" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Type" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Num" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Id" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Ctid" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Cc" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Allegiance" style="query" 
+                        type="xsd:string" required="false"/>
+                    <wadl:param name="Category" style="query" 
+                        type="xsd:string" required="false"/>
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="castor:AssocComposites"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified view was not recognized.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+<!-- 
+            <wadl:method name="DELETE">
+                <wadl:doc title="ADAL Delete Entity method">
+                    This method allows the client to delete all existing
+                    association record in the ASSOC DB related to the
+                    specified entity.
+
+                    <p/>As an example updating an existing association record, 
+                    a client should perform a HTTP DELETE to the URL:
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001?SysSource=System_of_Record">
+                    http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001?SysSource=System_of_Record
+                    </a>
+                    
+                    <p/>Please note, that as the application server does 
+                    not support PUT or DELETE operations, this method is
+                    not available in EAServer.
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="SysSource" style="query"
+                        type="assoc:SysSourceType" required="true"/>
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation status="200" mediaType="*/xml">
+                        <wadl:doc>
+                            The server will return a 200 status with no
+                            body on a successful deletion.
+                        </wadl:doc>
+                    </wadl:representation>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified view/SK combination was not 
+                            found.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method> <!- - End DELETE to /{view}/{sk} - ->
+-->
+            <wadl:resource path="{dataSrc}">
+                <wadl:param name="dataSrc" style="template"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Entity Query method">
+                        This method allows the client to retrieve all Association
+                        records that link an entity from the specified data source.
+                        
+                        <p/>For example, performing an HTTP GET to the
+                        URL:
+                        
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI">
+                        http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI
+                        </a>
+                        
+                        <p/>will retrieve all Associations objects related to the GMI
+                        data source.
+
+                        <p/>The returned objects will have the full association 
+                        description, and not the valid value abbreviation.
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:AssocComposites"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End GET to /entity/{dataSrc} -->                     
+                <wadl:resource path="{entityType}">
+                    <wadl:param name="entityType" style="template"
+                        required="true"/>
+                    <wadl:method name="GET">
+                        <wadl:doc title="ADAL Entity Query method">
+                            This method allows the client to retrieve all Association
+                            records that link a specific type of entity from the 
+                            specified data source.
+
+                            <p/>For example, performing an HTTP GET to the
+                            URL:
+
+                            <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit">
+                            http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit
+                            </a>
+
+                            <p/>will retrieve all Associations objects related to any
+                            Unit entity in the GMI data source.
+                            
+                            <p/>The returned objects will have the full association 
+                            description, and not the valid value abbreviation.
+                        </wadl:doc>
+                        <wadl:response>
+                            <wadl:representation mediaType="*/xml"
+                                element="castor:AssocComposites"/>
+                            <wadl:fault status="401" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 401 error if the
+                                    user failed to provide credentials using HTTP 
+                                    BASIC authentication headers, or the credentials
+                                    were not valid.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="404" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 404 error if the
+                                    specified view/SK combination was not 
+                                    found.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="400" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 400 error if the
+                                    an error occurred in the DAL performing the 
+                                    requested action.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="500" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 500 error if the
+                                    ReST service wrapper could not find an 
+                                    implementation matching the specified URL and 
+                                    Content-Type combination.
+                                </wadl:doc>
+                            </wadl:fault>
+                        </wadl:response>
+                    </wadl:method> <!-- End GET to /entity/{dataSrc}/{entityType} -->
+                    <wadl:resource path="{sk}">
+                        <wadl:param name="sk" style="template" type="assoc:SkType"
+                            required="true"/>
+                        <wadl:method name="GET">
+                            <wadl:doc title="ADAL Entity Query method">
+                                This method allows the client to retrieve all Association
+                                records that link a specific entity in the  
+                                specified data source.
+
+                                <p/>For example, performing an HTTP GET to the
+                                URL:
+
+                                <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001">
+                                http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001
+                                </a>
+
+                                <p/>will retrieve all Associations objects related to the 
+                                Unit entity with SK=12345000000001 in the GMI data source.
+
+                                <p/>The returned objects will have the full association 
+                                description, and not the valid value abbreviation.
+                            </wadl:doc>
+                            <wadl:response>
+                                <wadl:representation mediaType="*/xml"
+                                    element="castor:AssocComposites"/>
+                                <wadl:fault status="401" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 401 error if the
+                                        user failed to provide credentials using HTTP 
+                                        BASIC authentication headers, or the credentials
+                                        were not valid.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="404" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 404 error if the
+                                        specified view/SK combination was not 
+                                        found.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="400" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 400 error if the
+                                        an error occurred in the DAL performing the 
+                                        requested action.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="500" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 500 error if the
+                                        ReST service wrapper could not find an 
+                                        implementation matching the specified URL and 
+                                        Content-Type combination.
+                                    </wadl:doc>
+                                </wadl:fault>
+                            </wadl:response>
+                        </wadl:method> <!-- End GET to /entity/{dataSrc}/{entityType}/{sk} -->
+                        <wadl:method name="PUT">
+                            <wadl:doc title="ADAL Update Entity method">
+                                This method allows the client to update an existing
+                                entity (TABLE_KEYS) record in the ASSOC DB.  The client will 
+                                pass in an Entity element, the entity to update.  Additionally, the 
+                                client must specify the UserInformation (Ownership and 
+                                SYS_SOURCE) as query parameters in the URL of the POST.
+
+                                <p/>As an example updating an existing Entity record, 
+                                a client should perform a HTTP PUT to the URL:
+
+                                <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001?GroupId=MyGroup&amp;ProducerCode=AA&amp;SiteOriginator=12345&amp;SysSource=ADAL">
+                                http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001?GroupId=MyGroup&amp;ProducerCode=AA&amp;SiteOriginator=12345&amp;SysSource=ADAL
+                                </a>
+
+                                <p/>The body of that post should be an IXdbEntity XML
+                                element.
+
+                                <p/>Please note, that as the application server does 
+                                not support PUT or DELETE operations, this method is
+                                not available in EAServer.  Instead this same 
+                                functionality is replicated under POST to the same
+                                URL.
+                            </wadl:doc>
+                            <wadl:request>
+                                <wadl:param name="ProducerCode" style="query" 
+                                    type="assoc:ProducerCodeType" required="false"/>
+                                <wadl:param name="SiteOriginator" style="query" 
+                                    type="assoc:SiteOriginatorType" required="false"/>
+                                <wadl:param name="GroupId" style="query" 
+                                    type="xsd:string" required="false"/>
+                                <wadl:param name="SysSource" style="query"
+                                    type="assoc:SysSourceType" required="true"/>
+                                <wadl:representation mediaType="*/xml"
+                                    element="assoc:IXdbEntity"/>
+                            </wadl:request>
+                            <wadl:response>
+                                <wadl:representation mediaType="*/xml"
+                                    element="assoc:IXdbEntity"/>
+                                <wadl:fault status="401" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 401 error if the
+                                        user failed to provide credentials using HTTP 
+                                        BASIC authentication headers, or the credentials
+                                        were not valid.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="404" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 404 error if the
+                                        specified view/SK combination was not 
+                                        found.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="400" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 400 error if the
+                                        an error occurred in the DAL performing the 
+                                        requested action.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="500" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 500 error if the
+                                        ReST service wrapper could not find an 
+                                        implementation matching the specified URL and 
+                                        Content-Type combination.
+                                    </wadl:doc>
+                                </wadl:fault>
+                            </wadl:response>
+                        </wadl:method> <!-- End PUT to /entity/{dataSrc}/{entityType}/{sk} -->
+                        <wadl:method name="POST">
+                            <wadl:doc title="ADAL Update Entity method">
+                                This method allows the client to update an existing
+                                entity (TABLE_KEYS) record in the ASSOC DB.  The client will 
+                                pass in an Entity element, the entity to update.  Additionally, the 
+                                client must specify the UserInformation (Ownership and 
+                                SYS_SOURCE) as query parameters in the URL of the POST.
+
+                                <p/>As an example updating an existing Entity record, 
+                                a client should perform a HTTP PUT to the URL:
+
+                                <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001?GroupId=MyGroup&amp;ProducerCode=AA&amp;SiteOriginator=12345&amp;SysSource=ADAL">
+                                http://appserver:3003/i3/midb/adal/v1/rest/entity/GMI/Unit/12345000000001?GroupId=MyGroup&amp;ProducerCode=AA&amp;SiteOriginator=12345&amp;SysSource=ADAL
+                                </a>
+
+                                <p/>The body of that post should be an IXdbEntity XML
+                                element.
+
+                                <p/>This functionality is duplicated from a PUT 
+                                operation to the same URL as a workaround due to
+                                EAServer not supporting PUT or DELETE operations.
+                            </wadl:doc>
+                            <wadl:request>
+                                <wadl:param name="ProducerCode" style="query" 
+                                    type="assoc:ProducerCodeType" required="false"/>
+                                <wadl:param name="SiteOriginator" style="query" 
+                                    type="assoc:SiteOriginatorType" required="false"/>
+                                <wadl:param name="GroupId" style="query" 
+                                    type="xsd:string" required="false"/>
+                                <wadl:param name="SysSource" style="query"
+                                    type="assoc:SysSourceType" required="true"/>
+                                <wadl:representation mediaType="*/xml"
+                                    element="assoc:IXdbEntity"/>
+                            </wadl:request>
+                            <wadl:response>
+                                <wadl:representation status="200"/>
+                                <wadl:fault status="401" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 401 error if the
+                                        user failed to provide credentials using HTTP 
+                                        BASIC authentication headers, or the credentials
+                                        were not valid.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="404" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 404 error if the
+                                        specified view/SK combination was not 
+                                        found.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="400" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 400 error if the
+                                        an error occurred in the DAL performing the 
+                                        requested action.
+                                    </wadl:doc>
+                                </wadl:fault>
+                                <wadl:fault status="500" mediaType="*/xml"
+                                    element="castor:GeneralFailureException">
+                                    <wadl:doc>
+                                        The application will return a 500 error if the
+                                        ReST service wrapper could not find an 
+                                        implementation matching the specified URL and 
+                                        Content-Type combination.
+                                    </wadl:doc>
+                                </wadl:fault>
+                            </wadl:response>
+                        </wadl:method> <!-- End POST to /entity/{dataSrc}/{entityType}/{sk} -->
+                    </wadl:resource> <!-- End /entity/{dataSrc}/{entityType}/{sk} -->
+                </wadl:resource> <!-- End /entity/{dataSrc}/{entityType} -->
+            </wadl:resource> <!-- End /entity/{dataSrc} -->                        
+        </wadl:resource> <!-- End /entity -->
+
+ 
+<!-- 
+   History not currently support by ADAL
+        <wadl:resource path="history">
+            <wadl:param name="Start" style="query" type="xsd:dateTime"
+                required="true"/>
+            <wadl:param name="End" style="query" type="xsd:dateTime"
+                required="true"/>
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query All History method">
+                    This method allows the client to query for all changes
+                    that have occurred throughout the Assoc DB during the 
+                    specified period of time (all times in GMT).
+                    
+                    <p/>To find all the changes that have occurred in the
+                    Assoc DB between 12:00:00 GMT Nov 11, 2008 and 17:00:00 GMT
+                    Nov 12, 2008, the client should perform an HTTP GET on URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/history?Start=2008-11-11T12%3A00%3A00&amp;End=2008-11-12T17%3A00%3A00">
+                    http://appserver:3003/i3/midb/adal/v1/rest/history?Start=2008-11-11T12:00:00&amp;End=2008-11-12T17:00:00
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="assoc:HistoryResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{table}/{sk}">
+                <wadl:param name="table" style="template" type="assoc:TableType"
+                    required="true"/>
+                <wadl:param name="sk" style="template" type="assoc:SkType"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Specific History method">
+                        This method allows the client to query for all changes
+                        that have occurred to a specific AssocEntity during 
+                        the specified period of time (all times in GMT).
+                    
+                        <p/>To find all the changes that have occurred to 
+                        Organization AKA with SK 51000000000001 between 
+                        12:00:00 GMT Nov 11, 2008 and 17:00:00 GMT
+                        Nov 12, 2008, the client should perform an 
+                        HTTP GET on URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/history/OrganizationAka/51000000000001?Start=2008-11-11T12%3A00%3A00&amp;End=2008-11-12T17%3A00%3A00">
+                        http://appserver:3003/i3/midb/adal/v1/rest/history/OrganizationAka/51000000000001?Start=2008-11-11T12:00:00&amp;End=2008-11-12T17:00:00
+                        </a>
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml" 
+                            element="assoc:HistoryResults"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+            </wadl:resource>
+        </wadl:resource>
+-->
+        <wadl:resource path="changeEvent">
+            <wadl:param name="Start" style="query" type="xsd:dateTime"
+                required="true"/>
+            <wadl:param name="End" style="query" type="xsd:dateTime"
+                required="true"/>
+            <wadl:param name="QueryType" style="query" 
+               type="producer:ChangeEventType" default="short"/>
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query All History method">
+                    This method allows the client to query for all changes
+                    that have occurred throughout the ASSOC DB during the 
+                    specified period of time (all times in GMT).
+                    
+                    <p/>To find the Table and SK of all all the changes that 
+                    have occurred in the ASSOC DB between 12:00:00 GMT 
+                    Nov 11, 2008 and 17:00:00 GMT Nov 12, 2008, the client 
+                    should perform an HTTP GET on URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/changeEvent?Start=2008-11-11T12%3A00%3A00&amp;End=2008-11-12T17%3A00%3A00">
+                    http://appserver:3003/i3/midb/adal/v1/rest/changeEvent?Start=2008-11-11T12:00:00&amp;End=2008-11-12T17:00:00
+                    </a>
+                    
+                    <p/>The QueryType parameter will determine if only a 
+                    short change event record (just the Table and SK) or 
+                    a full change event record is returned.
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="producer:AssocChangeEvents"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{table}">
+                <wadl:param name="table" style="template" type="assoc:TableType"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Specific History method">
+                       This method allows the client to query for all changes
+                       that have occurred throughout the specified table of
+                       the ASSOC DB during the specified period of time 
+                       (all times in GMT).
+                       
+                       <p/>To find the complete details of all the changes that 
+                       have occurred to the Individual AKA table between 
+                       12:00:00 GMT Nov 11, 2008 and 17:00:00 GMT 
+                       Nov 12, 2008, the client should perform an HTTP 
+                       GET on URL:
+                       
+                       <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/changeEvent/IndividualAka?Start=2008-11-11T12%3A00%3A00&amp;End=2008-11-12T17%3A00%3A00&amp;QueryType=Full">
+                       http://appserver:3003/i3/midb/adal/v1/rest/changeEvent/IndividualAka?Start=2008-11-11T12:00:00&amp;End=2008-11-12T17:00:00&amp;QueryType=Full
+                       </a>
+                       
+                       <p/>The QueryType parameter will determine if only a 
+                       short change event record (just the Table and SK) or 
+                       a full change event record is returned.
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml" 
+                            element="producer:AssocChangeEvents"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified table was not found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+               <wadl:resource path="{sk}">
+                   <wadl:param name="sk" style="template" type="assoc:SkType"
+                       required="true"/>
+                   <wadl:method name="GET">
+                       <wadl:doc title="ADAL Query Specific History method">
+                          This method allows the client to query for all 
+                          changes that have occurred to the specified 
+                          entity in the GMI DB during the specified period 
+                          of time (all times in GMT).
+                          
+                          <p/>To find the complete details of all the 
+                          changes that have occurred in to the Material
+                          with SK 51000000000001 between 12:00:00 GMT 
+                          Nov 11, 2008 and 17:00:00 GMT Nov 12, 2008, 
+                          the client should perform an HTTP GET on URL:
+                          
+                          <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/changeEvent/Material/51000000000001?Start=2008-11-11T12%3A00%3A00&amp;End=2008-11-12T17%3A00%3A00&amp;QueryType=Full">
+                          http://appserver:3003/i3/midb/adal/v1/rest/changeEvent/Material/51000000000001?Start=2008-11-11T12:00:00&amp;End=2008-11-12T17:00:00&amp;QueryType=Full
+                          </a>
+                          
+                          <p/>The QueryType parameter will determine if only a 
+                          short change event record (just the Table and SK) or 
+                          a full change event record is returned.
+                       </wadl:doc>
+                       <wadl:response>
+                           <wadl:representation mediaType="*/xml" 
+                               element="producer:AssocChangeEvents"/>
+                           <wadl:fault status="401" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 401 error if the
+                                    user failed to provide credentials using HTTP 
+                                    BASIC authentication headers, or the credentials
+                                    were not valid.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="404" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 404 error if the
+                                    specified view/SK combination was not 
+                                    found.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="400" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 400 error if the
+                                    an error occurred in the DAL performing the 
+                                    requested action.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="500" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 500 error if the
+                                    ReST service wrapper could not find an 
+                                    implementation matching the specified URL and 
+                                    Content-Type combination.
+                                </wadl:doc>
+                            </wadl:fault>
+                       </wadl:response>
+                   </wadl:method>
+               </wadl:resource> <!-- End /changeEvent/{table}/{sk} -->
+            </wadl:resource> <!-- End /changeEvent/{table}/ -->
+        </wadl:resource> <!-- End /changeEvent -->
+        
+        <wadl:resource path="currentServer">
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query Current Server method">
+                    This method allows the client to query for the current
+                    server ID.
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/currentServer">
+                          http://appserver:3003/i3/midb/adal/v1/rest/currentServer
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="plain/text">
+                        <wadl:doc>
+                            The server will return a string with the current
+                            server ID. 
+                        </wadl:doc>
+                    </wadl:representation>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+        </wadl:resource> <!-- End /currentServer -->
+        <wadl:resource path="validValues">
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query All Valid Values method">
+                    This method allows the client to query for all valid values
+                    for all constrained fields in the Assoc DB.
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/validValues">
+                          http://appserver:3003/i3/midb/adal/v1/rest/validValues
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="castor:ValidValuesResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{field}">
+                <wadl:param name="field" style="template"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Specific Valid Values method">
+                        This method allows the client to query for all 
+                        valid values for the specified constrained fields 
+                        in the Assoc DB.
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/validValues/EVAL">
+                              http://appserver:3003/i3/midb/adal/v1/rest/validValues/EVAL
+                        </a>
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml" 
+                            element="castor:ValidValuesResults"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified field was not found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+            </wadl:resource> <!-- End /validValues/{field} -->
+        </wadl:resource> <!-- End /validValues -->
+        <wadl:resource path="fieldHelp">
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query All Field Help method">
+                    This method allows the client to query for the description
+                    of all fields in the Assoc DB.
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/fieldHelp">
+                          http://appserver:3003/i3/midb/adal/v1/rest/fieldHelp
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml"
+                        element="castor:FieldHelpResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{field}">
+                <wadl:param name="field" style="template"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Specific Field Help method">
+                        This method allows the client to query for the 
+                        description of a specific field in the Assoc DB.
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/fieldHelp/EVAL">
+                              http://appserver:3003/i3/midb/adal/v1/rest/fieldHelp/EVAL
+                        </a>
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:FieldHelpResults"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified field was not found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+            </wadl:resource> <!-- End /fieldHelp/{field} -->
+        </wadl:resource> <!-- End /fieldHelp -->
+        <wadl:resource path="fieldDef">
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query All Field Definitions method">
+                    This method allows the client to query for the description
+                    of all fields in the Assoc DB.
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/fieldDef">
+                          http://appserver:3003/i3/midb/adal/v1/rest/fieldDef
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml"
+                        element="castor:FieldDefResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{field}">
+                <wadl:param name="field" style="template"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Specific Field Definition method">
+                        This method allows the client to query for the 
+                        description of a specific field in the Assoc DB.
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/fieldDef/EVAL">
+                              http://appserver:3003/i3/midb/adal/v1/rest/fieldDef/EVAL
+                        </a>
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:FieldDefResults"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified field was not found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+            </wadl:resource> <!-- End /fieldDef/{field} -->
+        </wadl:resource> <!-- End /fieldDef -->
+        <wadl:resource path="dbTable">
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query All Valid Datasource Entity Pairs method">
+                    This method allows the client to query for all valid 
+                    datasource/entity pairs known by the ASSOC DB.
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/dbTable">
+                          http://appserver:3003/i3/midb/adal/v1/rest/dbTable
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml"
+                        element="castor:DbTableResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{dataSrc}">
+                <wadl:param name="dataSrc" style="template"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Specific Data Source Entities method">
+                        This method allows the client to query for all valid
+                        entitites within the specified data source as known 
+                        by the Assoc DB.
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/dbTable/GMI">
+                              http://appserver:3003/i3/midb/adal/v1/rest/dbTable/GMI
+                        </a>
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="castor:DbTableResults"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified field was not found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+                <wadl:resource path="{entityType}">
+                    <wadl:param name="entityType" style="template"
+                        required="true"/>
+                    <wadl:method name="GET">
+                        <wadl:doc title="ADAL Query Specific Data Source/Entity Type Pair method">
+                            This method allows the client to query for the
+                            DbTable record for the given data source/entity 
+                            type pair.
+    
+                            <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/dbTable/GMI/FAC">
+                                  http://appserver:3003/i3/midb/adal/v1/rest/dbTable/GMI/FAC
+                            </a>
+                        </wadl:doc>
+                        <wadl:response>
+                            <wadl:representation mediaType="*/xml"
+                                element="castor:DbTableResults"/>
+                            <wadl:fault status="401" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 401 error if the
+                                    user failed to provide credentials using HTTP 
+                                    BASIC authentication headers, or the credentials
+                                    were not valid.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="404" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 404 error if the
+                                    specified field was not found.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="400" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 400 error if the
+                                    an error occurred in the DAL performing the 
+                                    requested action.
+                                </wadl:doc>
+                            </wadl:fault>
+                            <wadl:fault status="500" mediaType="*/xml"
+                                element="castor:GeneralFailureException">
+                                <wadl:doc>
+                                    The application will return a 500 error if the
+                                    ReST service wrapper could not find an 
+                                    implementation matching the specified URL and 
+                                    Content-Type combination.
+                                </wadl:doc>
+                            </wadl:fault>
+                        </wadl:response>
+                    </wadl:method>
+                </wadl:resource> <!-- End /dbTable/{dataSrc}/{entityType} -->
+            </wadl:resource> <!-- End /dbTable/{dataSrc} -->
+        </wadl:resource> <!-- End /dbTable -->
+        <wadl:resource path="userPerms/{userId}">
+            <wadl:param name="userId" style="template" type="xsd:string"
+                required="true"/>
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query User Privileges method">
+                    This method allows the client to query for the privileges
+                    granted to a specific user in the Assoc DB.
+
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/userPerms/admin">
+                          http://appserver:3003/i3/midb/adal/v1/rest/userPerms/admin
+                    </a>
+                </wadl:doc>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml"
+                        element="support:User"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified user was not found.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+        </wadl:resource> <!-- End /userPerms/{userId} -->
+        <wadl:resource path="secCombo">
+            <wadl:method name="GET">
+                <wadl:doc title="ADAL Query Security Combination method">
+                    This method allows the client to query for all security
+                    combinations matching the values specified.
+                    
+                    <p/>For example, if a client wished to retrieve all valid
+                    combinations of Secret Collateral markings, the client 
+                    should perform an HTTP GET to URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/secCombo?ClassLvl=S&amp;DomainLvl=CO">
+                    http://appserver:3003/i3/midb/adal/v1/rest/secCombo?ClassLvl=S&amp;DomainLvl=CO
+                    </a>
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="ClassLvl" style="query" type="xsd:string"/>
+                    <wadl:param name="ControlMark" style="query" type="xsd:string"/>
+                    <wadl:param name="DomainLvl" style="query" type="xsd:string"/>
+                    <wadl:param name="ReleaseMark" style="query" type="xsd:string"/>
+                    <wadl:param name="OwnerProducer" style="query" type="xsd:string"/>
+                    <wadl:param name="Codeword" style="query" type="xsd:string"/>
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="castor:SecComboResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="aggregate">
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Query Security Combination Aggregation method">
+                        This method allows the client to determine the security
+                        combination resulting from the aggregation of multiple
+                        combinations.
+                        
+                        <p/>For example, if a client wished to the security
+                        combination that includes all caveats/dissemination
+                        controls for SI and TK markings, the client 
+                        should perform an HTTP GET to URL:
+                        
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/secCombo/aggregate?ClassLvl=T&amp;DomainLvl=SI&amp;ControlMark=IM&amp;OwnerProducer=US&amp;Codeword=1&amp;ClassLvl=S&amp;DomainLvl=TK&amp;ControlMark=NF&amp;OwnerProducer=US&amp;Codeword=2">
+                        http://appserver:3003/i3/midb/adal/v1/rest/secCombo/aggregate?ClassLvl=T&amp;DomainLvl=SI&amp;ControlMark=IM&amp;OwnerProducer=US&amp;Codeword=1&amp;ClassLvl=S&amp;DomainLvl=TK&amp;ControlMark=NF&amp;OwnerProducer=US&amp;Codeword=2
+                        </a>
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="ClassLvl" style="query" 
+                            type="xsd:string" repeating="true"/>
+                        <wadl:param name="ControlMark" style="query"  
+                            type="xsd:string" repeating="true"/>
+                        <wadl:param name="DomainLvl" style="query"   
+                            type="xsd:string" repeating="true"/>
+                        <wadl:param name="ReleaseMark" style="query"   
+                            type="xsd:string" repeating="true"/>
+                        <wadl:param name="OwnerProducer" style="query"   
+                            type="xsd:string" repeating="true"/>
+                        <wadl:param name="Codeword" style="query"   
+                            type="xsd:string" repeating="true"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml" 
+                            element="castor:SecComboResults"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method>
+            </wadl:resource> <!-- End /secCombo/aggregate -->
+        </wadl:resource> <!-- End /secCombo -->
+       <wadl:resource path="products">
+            <wadl:doc title="ADAL Graphic/Product view endpoint">
+                The /i3/midb/adal/v1/rest/products URL path represents
+                all Graphic/Product records.
+            </wadl:doc>
+            <wadl:method name="GET">
+                <wadl:doc title="Graphic/Product Query By Example method">
+                    <![CDATA[
+                    Performing a GET operation on the /i3/midb/adal/v1/rest/products
+                    endpoint will search the database for all Graphic/Product
+                    records matching the parameters specified in the request. 
+                    <p/> The ADAL ReST service supports the following wildcards
+                    in the parameter value:
+                    <ul>
+                        <li>* - Match zero or more of any character</li>
+                        <li>% - Match zero or more of any character</li>
+                        <li>? - Match exactly one of any character</li>
+                        <li>_ - Match exactly one of any character</li>
+                        <li>@ - Match exactly one alphabetic character</li>
+                        <li># - Match exactly one numeric character</li>
+                    </ul>
+                    
+                    <p/>Finally, the ADAL ReST service supports multivalue
+                    equivalence checks (the IN SQL operation).  The client 
+                    should specify the multiple values to compare separated by 
+                    commas, &apos;,&apos;.
+                    
+                    <p/>As an example using the Query by Example, to request
+                    all associations to GMI Units, the client should perform 
+                    an HTTP GET to the URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc?To.DataSource=GMI&amp;To.EntityType=Unit">
+                    http://appserver:3003/i3/midb/adal/v1/rest/assoc?To.DataSource=GMI&amp;To.EntityType=Unit
+                    </a>
+                    
+                    <p/>This Query by Example functionality is based off of the
+                    ADAL Query by Example API in the Search bean.  More 
+                    information is available 
+                    <a href="/adal_docs/mil/dia/midb/adal/association/ejb/AssociationSessionBean.html">
+                        here</a>.
+                        
+                    <p/>The association object specified may contain either the
+                    valid value or the full association description (type).  The
+                    returned objects will have the full association description,
+                    and not the valid value abbreviation.
+                    ]]>
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="StartIdx" style="query" 
+                        type="xsd:integer" required="false"/>
+                    <wadl:param name="EndIdx" style="query" 
+                        type="xsd:integer" required="false"/>
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml" 
+                        element="castor:ProductMetadataResults"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified view was not recognized.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:method name="POST">
+                <wadl:doc title="Graphic/Product Insert method">
+                    <![CDATA[
+                    This method allows the client to create a new association
+                    record in the ASSOC DB.  The client will pass in an 
+                    Association element, the association to insert.  
+                    Additionally, the client must specify the UserInformation 
+                    (Ownership and SYS_SOURCE) as query parameters in the URL 
+                    of the POST.
+                    
+                    <p/>As an example creating a new association record, a client
+                    should perform a HTTP POST to the URL:
+                    
+                    <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc?ProducerCode=AA&amp;SysSource=System_of_Record">
+                    http://appserver:3003/i3/midb/adal/v1/rest/assoc?ProducerCode=AA&amp;SysSource=System_of_Record
+                    </a>
+                    
+                    <p/>The body of that post should be an Association element.
+
+                    <p/>The association object specified may contain either the
+                    valid value or the full association description (type).  The
+                    returned object will have the full association description,
+                    and not the valid value abbreviation.
+                    ]]>
+                </wadl:doc>
+                <wadl:request>
+                    <wadl:param name="ProducerCode" style="query" 
+                        type="assoc:ProducerCodeType" required="false"/>
+                    <wadl:param name="SiteOriginator" style="query" 
+                        type="assoc:SiteOriginatorType" required="false"/>
+                    <wadl:param name="SysSource" style="query"
+                        type="assoc:SysSourceType" required="true"/>
+                    <wadl:representation mediaType="multipart/form-data">
+                        <wadl:param name="metadata" style="query" type="products:Product"/>
+                        <wadl:param name="file" style="plain"/>
+                    </wadl:representation>                        
+                </wadl:request>
+                <wadl:response>
+                    <wadl:representation mediaType="*/xml"
+                        element="products:ProductMetadata"/>
+                    <wadl:fault status="401" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 401 error if the
+                            user failed to provide credentials using HTTP 
+                            BASIC authentication headers, or the credentials
+                            were not valid.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="404" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 404 error if the
+                            specified view was not recognized.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="400" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 400 error if the
+                            an error occurred in the DAL performing the 
+                            requested action.
+                        </wadl:doc>
+                    </wadl:fault>
+                    <wadl:fault status="500" mediaType="*/xml"
+                        element="castor:GeneralFailureException">
+                        <wadl:doc>
+                            The application will return a 500 error if the
+                            ReST service wrapper could not find an 
+                            implementation matching the specified URL and 
+                            Content-Type combination.
+                        </wadl:doc>
+                    </wadl:fault>
+                </wadl:response>
+            </wadl:method>
+            <wadl:resource path="{sk}">
+                <wadl:param name="sk" style="template" type="assoc:SkType"
+                    required="true"/>
+                <wadl:method name="GET">
+                    <wadl:doc title="ADAL Retrieve Composite method">
+                        <![CDATA[
+                        This method allows the client to retrieve the details
+                        of a specific Association record.
+                        
+                        <p/>For example, performing an HTTP GET to the
+                        URL:
+                        
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001
+                        </a>
+                        
+                        <p/>will retrieve the Association object with SK 
+                        51000000000001.
+
+                        <p/>The returned object will have the full association 
+                        description, and not the valid value abbreviation.
+                        ]]>
+                    </wadl:doc>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="products:ProductMetadata"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End GET to /{view}/{sk} -->
+                <wadl:method name="PUT">
+                    <wadl:doc title="ADAL Update Composite method">
+                        <![CDATA[
+                        This method allows the client to update an existing
+                        association record in the ASSOC DB.  The client will 
+                        pass in an Association element, the composite to update.  Additionally, the 
+                        client must specify the UserInformation (Ownership and 
+                        SYS_SOURCE) as query parameters in the URL of the POST.
+
+                        <p/>As an example updating an existing Association record, 
+                        a client should perform a HTTP PUT to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+
+                        <p/>The body of that post should be an Association XML
+                        element.
+                        
+                        <p/>Please note, that as the application server does 
+                        not support PUT or DELETE operations, this method is
+                        not available in EAServer.  Instead this same 
+                        functionality is replicated under POST to the same
+                        URL.
+
+                        <p/>The association object specified may contain either the
+                        valid value or the full association description (type).  The
+                        returned object will have the full association description,
+                        and not the valid value abbreviation.
+                        ]]>
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                        <wadl:representation mediaType="*/xml"
+                            element="products:ProductMetadata"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation mediaType="*/xml"
+                            element="products:ProductMetadata"/>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End PUT to /{view}/{sk} -->
+                <wadl:method name="DELETE">
+                    <wadl:doc title="ADAL Delete Composite method">
+                        <![CDATA[
+                        This method allows the client to delete an existing
+                        association  record in the ASSOC DB.  The client will 
+                        pass in a PdalComposites element with exactly one 
+                        child, the composite to update.  Additionally, the 
+                        client must specify the UserInformation (Ownership and 
+                        SYS_SOURCE) as query parameters in the URL of the POST.
+
+                        <p/>As an example updating an existing association record, 
+                        a client should perform a HTTP DELETE to the URL:
+
+                        <p/><a href="http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record">
+                        http://appserver:3003/i3/midb/adal/v1/rest/assoc/51000000000001?ProducerCode=AA&amp;SysSource=System_of_Record
+                        </a>
+                        
+                        <p/>Please note, that as the application server does 
+                        not support PUT or DELETE operations, this method is
+                        not available in EAServer.
+                        ]]>
+                    </wadl:doc>
+                    <wadl:request>
+                        <wadl:param name="ProducerCode" style="query" 
+                            type="assoc:ProducerCodeType" required="false"/>
+                        <wadl:param name="SiteOriginator" style="query" 
+                            type="assoc:SiteOriginatorType" required="false"/>
+                        <wadl:param name="SysSource" style="query"
+                            type="assoc:SysSourceType" required="true"/>
+                    </wadl:request>
+                    <wadl:response>
+                        <wadl:representation status="200" mediaType="*/xml">
+                            <wadl:doc>
+                                The server will return a 200 status with no
+                                body on a successful deletion.
+                            </wadl:doc>
+                        </wadl:representation>
+                        <wadl:fault status="401" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 401 error if the
+                                user failed to provide credentials using HTTP 
+                                BASIC authentication headers, or the credentials
+                                were not valid.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="404" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 404 error if the
+                                specified view/SK combination was not 
+                                found.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="400" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 400 error if the
+                                an error occurred in the DAL performing the 
+                                requested action.
+                            </wadl:doc>
+                        </wadl:fault>
+                        <wadl:fault status="500" mediaType="*/xml"
+                            element="castor:GeneralFailureException">
+                            <wadl:doc>
+                                The application will return a 500 error if the
+                                ReST service wrapper could not find an 
+                                implementation matching the specified URL and 
+                                Content-Type combination.
+                            </wadl:doc>
+                        </wadl:fault>
+                    </wadl:response>
+                </wadl:method> <!-- End DELETE to /products/{sk} -->
+            </wadl:resource> <!-- End /products/{sk} -->
+       </wadl:resource> <!-- End /products -->        
+    </wadl:resources>
+</wadl:application>
